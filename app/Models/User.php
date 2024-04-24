@@ -53,6 +53,31 @@ class User extends Authenticatable
         return $this->BelongsToMany(Product::class, 'products_likes');
     }
 
+    public function patientInformation(): HasMany
+    {
+        return $this->hasMany(PatientInformation::class, 'patient_id', 'id');
+    }
+
+    public function patientAthrometric(): HasMany
+    {
+        return $this->hasMany(PatientAthrometric::class, 'patient_id', 'id');
+    }
+
+    public function patientPhysiology(): HasMany
+    {
+        return $this->hasMany(PatientPhysiology::class, 'patient_id', 'id');
+    }
+
+    public function activity(): HasMany
+    {
+        return $this->hasMany(PatientActivity::class, 'patient_id', 'id');
+    }
+
+    public function history(): HasMany
+    {
+        return $this->hasMany(PatientActivityHistory::class, 'patient_id', 'id');
+    }
+
     protected function firstName(): Attribute
     {
         return Attribute::make(
@@ -60,28 +85,10 @@ class User extends Authenticatable
         );
     }
 
-    public function patientInformation(): HasMany
+    protected function IsAdmin(): Attribute
     {
-        return $this->hasMany(PatientInformation::class , 'patient_id' , 'id');
-    }
-
-    public function patientAthrometric(): HasMany
-    {
-        return $this->hasMany(PatientAthrometric::class , 'patient_id' , 'id');
-    }
-
-    public function patientPhysiology(): HasMany
-    {
-        return $this->hasMany(PatientPhysiology::class , 'patient_id' , 'id');
-    }
-
-    public function activity(): HasMany
-    {
-        return $this->hasMany(PatientActivity::class , 'patient_id' , 'id');
-    }
-
-    public function history(): HasMany
-    {
-        return $this->hasMany(PatientActivityHistory::class , 'patient_id' , 'id');
+        return Attribute::make(
+            get: fn(?bool $value) => $this->role === 'admin'
+        );
     }
 }

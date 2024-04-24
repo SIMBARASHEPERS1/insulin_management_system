@@ -10,25 +10,40 @@ new class extends Component {
     #[Reactive]
     public string $period = '-30 days';
 
+    public User $user;
+
+    public function mount(): void
+    {
+        $this->user = auth()->user()->load('activity');
+    }
+
     // General statistics
     public function stats(): array
     {
-        $newCustomers = User::query()
-            ->where('created_at', '>=', Carbon::parse($this->period)->startOfDay())
-            ->count();
+        $averageSugarLevel = 0;
+        $lastSugarLevel = 0;
+        $lastActivity = '';
+        $healthClass = '';
 
-        $orders = Order::query()
-            ->where('created_at', '>=', Carbon::parse($this->period)->startOfDay())
-            ->count();
+        if (!$this->user->is_admin) {
+            $averageSugarLevel = $this->user->activity()->avg('sugar_level');
 
-        $gross = Order::query()
-            ->where('created_at', '>=', Carbon::parse($this->period)->startOfDay())
-            ->sum('total');
+            $lastSugarLevel = $this->user->activity()->latest()->first()->sugar_level;
 
+            list($lastActivity, $non) = explode(' ', $this->user->activity()->latest()->first()->protocol);
+
+            $healthClass = $this->user->patientAthrometric()->latest()->first()->bmi_category;
+        } else {
+            $averageSugarLevel = User::where('role', 'patient')->count();
+            $lastSugarLevel = User::whereRelation('patientInformation', 'class', 'adult')->count();
+            $lastActivity = User::whereRelation('patientInformation', 'class', 'adolescent')->count();
+            $healthClass = User::whereRelation('activity', 'class', 'adult')->latest()->first()->bmi_category;
+        }
         return [
-            'newCustomers' => $newCustomers,
-            'orders' => $orders,
-            'gross' => Number::currency($gross)
+            'gross' => number_format($averageSugarLevel, 2) . ' mg/dL',
+            'orders' => $lastSugarLevel . ' mg/dL',
+            'newCustomers' => $lastActivity,
+            'healthClass' => $healthClass
         ];
     }
 
@@ -41,10 +56,20 @@ new class extends Component {
 }; ?>
 
 <div>
+
     <div class="grid lg:grid-cols-4 gap-5 lg:gap-8">
-        <x-stat :value="$stats['gross']" title="Gross" icon="o-banknotes" class="shadow truncate text-ellipsis" />
-        <x-stat :value="$stats['orders']" title="Orders" icon="o-gift" class="shadow" />
-        <x-stat :value="$stats['newCustomers']" title="New customers" icon="o-user-plus" class="shadow" />
-        <x-stat value="maryUI" title="Built with" icon="o-heart" color="!text-pink-500" class="shadow" />
+        @if(!$user->is_admin)
+            <x-stat :value="$stats['gross']" title="Average Sugar Level" icon="o-banknotes"
+                    class="shadow truncate text-ellipsis"/>
+            <x-stat :value="$stats['orders']" title="Last Sugar level" icon="o-gift" class="shadow"/>
+            <x-stat :value="$stats['newCustomers']" title="Last Activity" icon="o-user-plus" class="shadow"/>
+            <x-stat :value="$stats['healthClass']" title="Health Class" icon="o-heart" color="!text-pink-500"
+                    class="shadow"/>
+        @else
+            <x-stat :value="$stats['gross']" title="Total Patients" icon="o-banknotes" class="shadow truncate text-ellipsis"/>
+            <x-stat :value="$stats['orders']" title="Total Adults" icon="o-gift" class="shadow"/>
+            <x-stat :value="$stats['newCustomers']" title="Total Adolescents" icon="o-user-plus" class="shadow"/>
+            <x-stat :value="0" title="Most Activity" icon="o-heart" color="!text-pink-500" class="shadow"/>
+        @endif
     </div>
 </div>

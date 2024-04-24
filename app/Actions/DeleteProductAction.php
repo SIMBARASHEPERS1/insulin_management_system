@@ -11,6 +11,9 @@ class DeleteProductAction
     {
     }
 
+    /**
+     * @throws AppException
+     */
     public function execute(): void
     {
         if ($this->product->sales()->count()) {
