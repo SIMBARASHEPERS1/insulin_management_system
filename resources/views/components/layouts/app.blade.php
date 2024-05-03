@@ -74,16 +74,8 @@
             <x-menu-separator />
 
             <x-menu-item title="Dashboard" icon="o-chart-pie" link="/" />
-            @if(auth()->user()->role === 'patient')
-                <x-menu-item title="Blood Sugar Tests" icon="o-user" link="/orders" />
-            @else
-                <x-menu-item title="Administrators" icon="o-gift" link="/orders" />
-                <x-menu-item title="Patients" icon="o-user" link="/users" />
-            @endif
-            @if(auth()->user()->role === 'patient')
-                <x-menu-item title="Settings" icon="o-cog-8-tooth" link="/brands" />
-            @endif
-
+            <x-menu-item title="Services" icon="o-gift" link="/categories" />
+            <x-menu-item title="Clients" icon="o-user" link="/users" />
 
 {{--            <x-menu-sub title="Warehouse" icon="o-wrench-screwdriver">--}}
 {{--                <x-menu-item title="Brands" icon="o-tag" link="/brands" />--}}
@@ -93,7 +85,7 @@
 
             <x-menu-separator />
 
-            <x-menu-item title="Search" @click.stop="$dispatch('mary-search-open')" icon="o-magnifying-glass" badge="Cmd + G" />
+{{--            <x-menu-item title="Search" @click.stop="$dispatch('mary-search-open')" icon="o-magnifying-glass" badge="Cmd + G" />--}}
         </x-menu>
     </x-slot:sidebar>
 
@@ -103,7 +95,7 @@
 
         <div class="flex mt-5">
             {{--            <x-button label="Source code" icon="o-code-bracket" link="/support-us" class="btn-ghost" />--}}
-{{--            <x-button label="Built with maryUI" icon="o-heart" link="https://mary-ui.com" class="btn-ghost !text-pink-500" external />--}}
+            <x-button label="Built with maryUI" icon="o-heart" link="https://mary-ui.com" class="btn-ghost !text-pink-500" external />
         </div>
     </x-slot:content>
 </x-main>

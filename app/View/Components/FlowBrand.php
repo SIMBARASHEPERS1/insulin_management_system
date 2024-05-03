@@ -28,7 +28,7 @@ class FlowBrand extends Component
                         <div class="flex gap-2">
                             <img src="/images/flow.png" width="30" class="mt-1" />
                             <span class="font-bold text-3xl mr-3 bg-gradient-to-r from-purple-500 to-pink-300 bg-clip-text text-transparent ">
-                               IMS
+                               LASMS
                             </span>
                         </div>
                     </div>

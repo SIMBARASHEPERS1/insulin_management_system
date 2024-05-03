@@ -58,9 +58,9 @@ new class extends Component {
     {
         return [
             ['key' => 'id', 'label' => '#', 'class' => 'w-20'],
-            ['key' => 'name', 'label' => 'Name'],
-            ['key' => 'products_count', 'label' => 'Products', 'class' => 'w-32', 'sortBy' => 'products_count'],
-            ['key' => 'date_human', 'label' => 'Created at', 'class' => 'hidden lg:table-cell']
+            ['key' => 'name', 'label' => 'Type'],
+            ['key' => 'products_count', 'label' => 'Frequency', 'class' => 'w-32', 'sortBy' => 'products_count'],
+//            ['key' => 'date_human', 'label' => 'Created at', 'class' => 'hidden lg:table-cell']
         ];
     }
 

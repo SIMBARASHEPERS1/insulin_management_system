@@ -48,8 +48,8 @@ new class extends Component {
     public function refreshChartGross(): void
     {
         $sales = Order::query()
-            ->selectRaw("DATE_FORMAT('%Y-%m-%d', created_at) as day, sum(total) as total")
-            ->groupBy('day')
+            ->select("created_at as day")
+//            ->groupBy('day')
             ->where('created_at', '>=', Carbon::parse($this->period)->startOfDay())
             ->get();
 
@@ -66,7 +66,7 @@ new class extends Component {
 }; ?>
 
 <div>
-    <x-card title="Gross" separator shadow>
+    <x-card title="Location Service" separator shadow>
         <x-chart wire:model="chartGross" class="h-44"/>
     </x-card>
 </div>

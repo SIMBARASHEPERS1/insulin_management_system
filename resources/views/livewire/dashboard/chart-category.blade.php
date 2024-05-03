@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Product;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Reactive;
@@ -58,7 +59,7 @@ new class extends Component {
 }; ?>
 
 <div>
-    <x-card title="Category" separator shadow>
-        <x-chart wire:model="chartCategory" class="h-44" />
+    <x-card title="Service Frequency" separator shadow>
+        <x-chart wire:model="chartCategory" class="h-44"/>
     </x-card>
 </div>

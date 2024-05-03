@@ -38,10 +38,11 @@ new class extends Component {
     {
         return [
             ['key' => 'id', 'label' => '#', 'class' => 'py-4', 'class' => 'hidden lg:table-cell'],
-            ['key' => 'date_human', 'label' => 'Date', 'class' => 'hidden lg:table-cell'],
-            ['key' => 'user.name', 'label' => 'Customer'],
-            ['key' => 'total_human', 'label' => 'Total'],
-            ['key' => 'status', 'label' => 'Status', 'class' => 'hidden lg:table-cell']
+            ['key' => 'date_human', 'label' => 'Date Requested', 'class' => 'hidden lg:table-cell'],
+            ['key' => 'user.name', 'label' => 'User Name'],
+            ['key' => 'user.country.name', 'label' => 'Location', 'class' => 'hidden lg:table-cell'],
+//            ['key' => 'total_human', 'label' => 'Total'],
+            ['key' => 'status', 'label' => 'Service Type', 'class' => 'hidden lg:table-cell']
         ];
     }
 
@@ -55,13 +56,13 @@ new class extends Component {
 }; ?>
 
 <div>
-    <x-card title="Oldest orders" separator shadow progress-indicator class="mt-10">
+    <x-card title="Requested Services" separator shadow progress-indicator class="mt-10">
         <x-slot:menu>
             <x-button label="Orders" icon-right="o-arrow-right" link="/orders" class="btn-ghost btn-sm" />
         </x-slot:menu>
         <x-table :headers="$headers" :rows="$orders" @row-click="$wire.preview($event.detail.id)">
             @scope('cell_status', $order)
-            <x-badge :value="$order->status->name" :class="$order->status->color" />
+                <x-badge :value="$order->status->name" :class="$order->status->color" />
             @endscope
         </x-table>
 

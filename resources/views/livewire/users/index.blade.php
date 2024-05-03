@@ -55,7 +55,7 @@ new class extends Component {
         return [
             ['key' => 'avatar', 'label' => '', 'class' => 'w-14', 'sortable' => false],
             ['key' => 'name', 'label' => 'Name'],
-            ['key' => 'country.name', 'label' => 'Country', 'sortBy' => 'country_name', 'class' => 'hidden lg:table-cell'],
+            ['key' => 'country.name', 'label' => 'Location', 'sortBy' => 'country_name', 'class' => 'hidden lg:table-cell'],
             ['key' => 'email', 'label' => 'E-mail', 'class' => 'hidden lg:table-cell']
         ];
     }
@@ -73,7 +73,7 @@ new class extends Component {
 
 <div>
     {{--  HEADER  --}}
-    <x-header title="Patients" separator progress-indicator>
+    <x-header title="Customers" separator progress-indicator>
         {{--  SEARCH --}}
         <x-slot:middle class="!justify-end">
             <x-input placeholder="Name..." wire:model.live.debounce="name" icon="o-magnifying-glass" clearable />
@@ -98,7 +98,7 @@ new class extends Component {
         <x-table :headers="$headers" :rows="$users" :sort-by="$sortBy" link="/users/{id}" with-pagination>
             {{-- Avatar scope --}}
             @scope('cell_avatar', $user)
-              <x-avatar :image="$user->avatar" class="!w-10" />
+            <x-avatar :image="$user->avatar" class="!w-10" />
             @endscope
         </x-table>
     </x-card>

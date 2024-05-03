@@ -136,7 +136,7 @@ new class extends Component {
                 <x-card title="Cover" separator>
                     <div class="flex">
                         <x-file wire:model="cover_file" accept="image/png, image/jpeg" hint="Click to change | Max 1MB" class="mx-auto">
-                            <img src="{{  $product->cover ?? '/images/empty-product.png' }}" class="h-48 !rounded-lg my-3"  alt=""/>
+                            <img src="{{  $product->cover ?? '/images/empty-product.png' }}" class="h-48 !rounded-lg my-3" />
                         </x-file>
                     </div>
                 </x-card>
