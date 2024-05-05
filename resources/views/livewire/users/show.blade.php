@@ -12,7 +12,7 @@ new class extends Component {
 
     public function mount(): void
     {
-        $this->user->load(['country']);
+        $this->user->load(['patientInformation','patientAthrometric','patientPhysiology']);
     }
 
     public function favorites(): Collection
@@ -65,7 +65,7 @@ new class extends Component {
 <div>
     <x-header :title="$user->name" separator>
         <x-slot:actions>
-            <x-button label="Edit" link="/users/{{ $user->id }}/edit" icon="o-pencil" class="btn-primary" responsive />
+            <x-button label="Edit" link="/users/{{ $user->id }}/edit" icon="o-pencil" class="btn-primary" responsive/>
         </x-slot:actions>
     </x-header>
 
@@ -77,36 +77,66 @@ new class extends Component {
                     {{ $user->name }}
                 </x-slot:title>
                 <x-slot:subtitle class="flex flex-col gap-2 p-2 pl-2">
-                    <x-icon name="o-envelope" :label="$user->email" />
-                    <x-icon name="o-map-pin" :label="$user->country->name" />
+                    <x-icon name="o-envelope" :label="$user->email"/>
+                    <x-icon name="o-folder-minus"
+                            :label="Carbon::parse($user?->patientInformation->first()?->dob)->age . ' years'"/>
+                    <x-icon name="o-user-plus"
+                            :label="$user?->patientInformation->first()?->class"/>
                 </x-slot:subtitle>
             </x-avatar>
         </x-card>
 
         {{-- FAVORITES --}}
-        <x-card title="Favorites" separator shadow>
-            @forelse($favorites as $product)
-                <x-list-item :item="$product" sub-value="category.name" avatar="cover" link="/products/{{ $product->id }}/edit" no-separator>
-                    <x-slot:actions>
-                        <x-badge :value="$product->amount" class="font-bold" />
-                    </x-slot:actions>
-                </x-list-item>
-            @empty
-                <x-icon name="o-list-bullet" label="Nothing here." class="text-gray-400" />
-            @endforelse
+        <x-card title="Information" separator shadow>
+            <div class="grid grid-cols-2 gap-4 content-start">
+                <div>
+                    <x-list-item :item="$user?->patientInformation->first()" sub-value="category.name" avatar="cover"
+                                 no-separator>
+                        <x-slot:value>
+                            {{ __('BMI : ').$user?->patientAthrometric->first()->bmi}}
+                        </x-slot:value>
+                    </x-list-item>
+                    <x-list-item :item="$user?->patientPhysiology->first()" sub-value="category.name" avatar="cover"
+                                 no-separator>
+                        <x-slot:value>
+                            {{ __('TBV : ').$user?->patientPhysiology->first()->tbv}}
+                        </x-slot:value>
+                    </x-list-item>
+                    <x-list-item :item="$user?->patientPhysiology->first()" sub-value="category.name" avatar="cover"
+                                 no-separator>
+                        <x-slot:value>
+                            {{ __('CBGR : ').$user?->patientPhysiology->first()->cbgr}}
+                        </x-slot:value>
+                    </x-list-item>
+                </div>
+                <div>
+                    <x-list-item :item="$user?->patientPhysiology->first()" sub-value="category.name" avatar="cover"
+                                 no-separator>
+                        <x-slot:value>
+                            {{ __('ISF : ').$user?->patientPhysiology->first()->isf}}
+                        </x-slot:value>
+                    </x-list-item>
+                    <x-list-item :item="$user?->patientPhysiology->first()" sub-value="category.name" avatar="cover"
+                                 no-separator>
+                        <x-slot:value>
+                            {{ __('DIA : ').$user?->patientPhysiology->first()->dia}}
+                        </x-slot:value>
+                    </x-list-item>
+                </div>
+            </div>
         </x-card>
     </div>
 
     {{-- RECENT ORDERS --}}
-    <x-card title="Recent Orders" separator shadow class="mt-8">
+    <x-card title="Recent Data" separator shadow class="mt-8">
         <x-table :rows="$orders" :headers="$headers" link="/orders/{id}/edit">
             @scope('cell_status', $order)
-            <x-badge :value="$order->status->name" :class="$order->status->color" />
+            <x-badge :value="$order->status->name" :class="$order->status->color"/>
             @endscope
         </x-table>
 
         @if(!$orders->count())
-            <x-icon name="o-list-bullet" label="Nothing here." class="text-gray-400 mt-5" />
+            <x-icon name="o-list-bullet" label="Nothing here." class="text-gray-400 mt-5"/>
         @endif
     </x-card>
 </div>

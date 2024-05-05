@@ -59,7 +59,7 @@ new class extends Component {
 }; ?>
 
 <div>
-    <x-card title="Service Frequency" separator shadow>
+    <x-card title="{{$admin = auth()->user()->is_admin ? __('Distribution') :  __('BMI')}}" separator shadow>
         <x-chart wire:model="chartCategory" class="h-44"/>
     </x-card>
 </div>

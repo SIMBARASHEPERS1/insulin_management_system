@@ -11,6 +11,13 @@ new class extends Component {
     #[Reactive]
     public string $period = '-30 days';
 
+//    public bool $admin;
+//
+//    public function mount(): void
+//    {
+//        $this->admin = auth()->user()->is_admin;
+//    }
+
     public array $chartGross = [
         'type' => 'line',
         'options' => [
@@ -48,8 +55,8 @@ new class extends Component {
     public function refreshChartGross(): void
     {
         $sales = Order::query()
-            ->select("created_at as day")
-//            ->groupBy('day')
+            ->selectRaw("DATE_FORMAT('%Y-%m-%d', created_at) as day, sum(total) as total")
+            ->groupBy('day')
             ->where('created_at', '>=', Carbon::parse($this->period)->startOfDay())
             ->get();
 
@@ -66,7 +73,8 @@ new class extends Component {
 }; ?>
 
 <div>
-    <x-card title="Location Service" separator shadow>
+    <x-card title="{{$admin = auth()->user()->is_admin ? __('Averages') :  __('Blood Glucose Trend')}}" separator
+            shadow>
         <x-chart wire:model="chartGross" class="h-44"/>
     </x-card>
 </div>

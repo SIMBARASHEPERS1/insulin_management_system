@@ -16,10 +16,10 @@
     <x-slot:content>
         {{ $slot }}
 
-        <div class="flex mt-20 justify-center">
-            <x-button label="Source code" icon="o-code-bracket" link="/support-us" class="btn-ghost" />
-            <x-button label="Built with maryUI" icon="o-heart" link="https://mary-ui.com" class="btn-ghost !text-pink-500" external />
-        </div>
+{{--        <div class="flex mt-20 justify-center">--}}
+{{--            <x-button label="Source code" icon="o-code-bracket" link="/support-us" class="btn-ghost" />--}}
+{{--            <x-button label="Built with maryUI" icon="o-heart" link="https://mary-ui.com" class="btn-ghost !text-pink-500" external />--}}
+{{--        </div>--}}
     </x-slot:content>
 </x-main>
 

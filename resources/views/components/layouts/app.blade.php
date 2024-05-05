@@ -73,9 +73,19 @@
 
             <x-menu-separator />
 
-            <x-menu-item title="Dashboard" icon="o-chart-pie" link="/" />
-            <x-menu-item title="Services" icon="o-gift" link="/categories" />
-            <x-menu-item title="Clients" icon="o-user" link="/users" />
+            <x-menu-item title="Home" icon="o-home" link="/" />
+            @if(auth()->user()->role === 'patient')
+                <x-menu-item title="Entries" icon="o-clipboard" link="/orders" />
+            @else
+                <x-menu-item title="Administrators" icon="o-user-circle" link="/products" />
+                <x-menu-item title="Patients" icon="o-user-plus" link="/users" />
+            @endif
+            <x-menu-item title="Analytics" icon="o-chart-pie" link="/categories" />
+            <x-menu-item title="Settings" icon="o-cog-8-tooth" link="/brands" />
+          {{-- @if(auth()->user()->role === 'patient')
+                <x-menu-item title="Settings" icon="o-cog-8-tooth" link="/brands" />
+            @endif  --}}
+
 
 {{--            <x-menu-sub title="Warehouse" icon="o-wrench-screwdriver">--}}
 {{--                <x-menu-item title="Brands" icon="o-tag" link="/brands" />--}}
@@ -85,7 +95,7 @@
 
             <x-menu-separator />
 
-{{--            <x-menu-item title="Search" @click.stop="$dispatch('mary-search-open')" icon="o-magnifying-glass" badge="Cmd + G" />--}}
+            <x-menu-item title="Search" @click.stop="$dispatch('mary-search-open')" icon="o-magnifying-glass"  />
         </x-menu>
     </x-slot:sidebar>
 
@@ -95,7 +105,7 @@
 
         <div class="flex mt-5">
             {{--            <x-button label="Source code" icon="o-code-bracket" link="/support-us" class="btn-ghost" />--}}
-            <x-button label="Built with maryUI" icon="o-heart" link="https://mary-ui.com" class="btn-ghost !text-pink-500" external />
+{{--            <x-button label="Built with maryUI" icon="o-heart" link="https://mary-ui.com" class="btn-ghost !text-pink-500" external />--}}
         </div>
     </x-slot:content>
 </x-main>
@@ -104,7 +114,7 @@
 <x-toast />
 
 {{-- Spotlight --}}
-<x-spotlight search-text="Order number, customer, products or any action ..." />
+<x-spotlight search-text="Search..." />
 
 {{-- Theme Toggle--}}
 <x-theme-toggle class="hidden" />
