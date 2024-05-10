@@ -73,32 +73,44 @@ new class extends Component {
     <livewire:dashboard.stats :$period/>
 
     <div class="grid lg:grid-cols-6 gap-8 mt-8">
-        {{-- AVERAGES --}}
-        <div class="col-span-6 lg:col-span-4">
-            <livewire:dashboard.chart-gross :$period/>
-        </div>
+        {{-- AVERAGES OR SUGAR LEVEL --}}
+        @if(auth()->user()->role === 'patient')
+                <div class=" col-span-6 lg:col-span-3" >
+                    <livewire:dashboard.chart-blood-glucose :$period/>
+                 </div> 
+            @else
+               <div class=" col-span-6 lg:col-span-3" >
+                    <livewire:dashboard.chart-gross :$period/>
+                 </div> 
+            @endif 
 
-        {{-- PER CATEGORY --}}
-        <div class="col-span-6 lg:col-span-2">
-            <livewire:dashboard.chart-category :$period/>
-        </div>
+        {{-- PATIENT DISTRIBUTION OR BMI --}}
+        @if(auth()->user()->role === 'patient')
+                <div class=" col-span-6 lg:col-span-3" >
+                    <livewire:dashboard.chart-bmi :$period/>
+                 </div> 
+            @else
+               <div class=" col-span-6 lg:col-span-3" >
+                    <livewire:dashboard.chart-category :$period/>
+                 </div> 
+            @endif  
     </div>
 
     @if($isAdmin)
         <div class="grid lg:grid-cols-4 gap-8 mt-8">
-            {{-- TOP CUSTOMERS --}}
+            {{-- TOP PATIENTS --}}
             <div class="col-span-2">
                 <livewire:dashboard.top-customers :$period/>
             </div>
 
             {{-- BEST SELLERS --}}
             <div class="col-span-2">
-                <livewire:dashboard.best-sellers :$period/>
+                <livewire:dashboard.admins :$period/>
             </div>
 
         </div>
 
         {{-- LATEST ORDERS --}}
-        <livewire:dashboard.oldest-orders :$period/>
+        {{-- <livewire:dashboard.oldest-orders :$period/> --}}
     @endif
 </div>

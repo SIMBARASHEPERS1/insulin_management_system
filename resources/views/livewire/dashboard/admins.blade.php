@@ -9,7 +9,7 @@ use Livewire\Volt\Component;
 new class extends Component {
     #[Reactive]
     public string $period = '-30 days';
-    public string $lastSugarLevel = '2.8 mmol/L';
+    public string $lastActionTaken = 'Added new patient';
 
     public function topCustomers(): Collection
     {
@@ -24,7 +24,7 @@ new class extends Component {
             ->transform(function (Order $order) {
                 $user = $order->user;
                 $user->amount = Number::currency($order->amount);
-                $user->lastSugarLevel = $this->lastSugarLevel; 
+                $user->lastActionTaken = $this->lastActionTaken; 
 
                 return $user;
             });
@@ -42,16 +42,16 @@ new class extends Component {
 }; ?>
 
 <div>
-    <x-card title="Critical levels patients" separator shadow>
+    <x-card title="Administrators" separator shadow>
         <x-slot:menu>
-            <x-button label="View all patients" icon-right="o-arrow-right" link="/users" class="btn-ghost btn-sm" />
+            <x-button label="View all admins" icon-right="o-arrow-right" link="/users" class="btn-ghost btn-sm" />
         </x-slot:menu>
 
         @foreach($topCustomers as $customer)
            <x-list-item :item="$customer" sub-value="" link="/users/{{ $customer->id }}" no-separator>
                 <x-slot:actions>
                 {{-- <x-badge :value="$customer->amount" class="font-bold" /> --}}
-                <span>Last recorded: {{ $this->lastSugarLevel }}</span> 
+                <span>Last action: {{ $this->lastActionTaken }}</span> 
                 </x-slot:actions>
             </x-list-item>
         @endforeach

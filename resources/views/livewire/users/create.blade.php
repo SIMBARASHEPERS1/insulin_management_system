@@ -86,7 +86,8 @@ new class extends Component {
             + 0.1833;
 
         $user->patientPhysiology()->create([
-            'tbv' => round($tbv, 5),
+            // 'tbv' => round($tbv, 5),
+            'tbv' => '2',
             'cbgr' => round((0.00556 / (0.6 * $tbv)), 5),
             'isf' => 2,
             'dia' => 0.5,
@@ -104,21 +105,24 @@ new class extends Component {
 ?>
 
 <div>
-    <x-header title="New Customer" separator progress-indicator/>
+    <x-header title="New Patient" separator progress-indicator/>
 
     <div class="grid gap-5 lg:grid-cols-2">
         <div>
             <x-form wire:submit="save">
-                <x-file label="Avatar" wire:model="avatar_file" accept="image/png, image/jpeg"
+                <x-file label="Profile picture" wire:model="avatar_file" accept="image/png, image/jpeg"
                         hint="Click to change | Max 1MB" crop-after-change>
                     <img src="{{ $user->avatar ?? '/images/empty-user.jpg' }}" class="h-40 rounded-lg mb-3"/>
                 </x-file>
                 <x-input label="Name" wire:model="name" icon="o-user" required/>
+                
+                <x-input label="Phone" wire:model="phone" icon="o-phone" required/>
+
                 <x-input label="Email" wire:model="email" icon="o-at-symbol" required/>
 
                 <x-select label="Gender" wire:model="gender"
-                          :options="collect([['id' => 'male', 'name' => 'Male'], ['id' => 'female', 'name' => 'female']])"
-                          placeholder="---"
+                          :options="collect([['id' => 'male', 'name' => 'Male'], ['id' => 'female', 'name' => 'Female']])"
+                          placeholder="Select gender"
                           icon="o-user-plus"/>
 
                 <x-input label="Date Of Birth" type="date" wire:model="dob" icon="o-calendar" required/>
@@ -137,8 +141,8 @@ new class extends Component {
                 </x-slot:actions>
             </x-form>
         </div>
-        <div>
+        {{-- <div>
             <img src="/images/edit-form.png" width="300" class="mx-auto"/>
-        </div>
+        </div> --}}
     </div>
 </div>
