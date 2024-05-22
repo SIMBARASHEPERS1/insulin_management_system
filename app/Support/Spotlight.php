@@ -71,7 +71,7 @@ class Spotlight
                 return [
                     'name' => $user->name,
                     'description' => 'Customer',
-                    'link' => "/users/$user->id",
+                    'link' => "/patients/$user->id",
                     'avatar' => $user->avatar
                 ];
             });
@@ -89,14 +89,14 @@ class Spotlight
             ],
             [
                 'name' => 'Categories',
-                'description' => 'Manage categories',
-                'link' => "/categories",
+                'description' => 'Manage analytics',
+                'link' => "/analytics",
                 'icon' => Blade::render("<x-icon name='o-hashtag' class='w-11 h-11 p-2 bg-primary/20 rounded-full' />")
             ],
             [
                 'name' => 'Brands',
-                'description' => 'Manage brands',
-                'link' => "/brands",
+                'description' => 'Manage userSettings',
+                'link' => "/userSettings",
                 'icon' => Blade::render("<x-icon name='o-tag' class='w-11 h-11 p-2 bg-primary/20 rounded-full' />")
             ],
             [
@@ -107,8 +107,8 @@ class Spotlight
             ],
             [
                 'name' => 'Users',
-                'description' => 'Manage users & customers',
-                'link' => "/users",
+                'description' => 'Manage patients & customers',
+                'link' => "/patients",
                 'icon' => Blade::render("<x-icon name='o-user' class='w-11 h-11 p-2 bg-primary/20 rounded-full' />")
             ],
             [
@@ -120,7 +120,7 @@ class Spotlight
             [
                 'name' => 'Users',
                 'description' => 'Create a new user/customer',
-                'link' => "/users/create",
+                'link' => "/patients/create",
                 'icon' => Blade::render("<x-icon name='o-bolt' class='w-11 h-11 p-2 bg-warning/20 rounded-full' />")
             ],
             [

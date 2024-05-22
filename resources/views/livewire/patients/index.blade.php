@@ -23,7 +23,7 @@ new class extends Component {
     #[Url]
     public array $sortBy = ['column' => 'name', 'direction' => 'asc'];
 
-    // All users
+    // All patients
     public function users(): LengthAwarePaginator
     {
         return User::query()
@@ -53,7 +53,7 @@ new class extends Component {
     {
         return [
             'headers' => $this->headers(),
-            'users' => $this->users(),
+            'patients' => $this->users(),
         ];
     }
 }; ?>

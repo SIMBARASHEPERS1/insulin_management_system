@@ -15,10 +15,12 @@ use Livewire\Volt\Volt;
 */
 
 // Support us
-Volt::route('/support-us', 'support-us');
-
+Volt::route('/support-us', 'support-us')
+    ->middleware('guest');
 // Login
-Volt::route('/login', 'login')->name('login');
+Volt::route('/login', 'login')
+    ->middleware('guest')
+    ->name('login');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     // Dashboard
@@ -30,26 +32,25 @@ Route::middleware(['auth', 'verified'])->group(function () {
         auth()->logout();
         request()->session()->invalidate();
         request()->session()->regenerateToken();
-
         return redirect('/');
     });
 
     // Users
-    Volt::route('/patients/view', 'users.index');
-    Volt::route('/patient/{user}/edit', 'users.edit');
-    Volt::route('/patient/create', 'users.create');
-    Volt::route('/patient/{user}', 'users.show');
-    Volt::route('/patient/{user}/entry', 'users.entries');
+    Volt::route('/patients/view', 'patients.index');
+    Volt::route('/patient/{user}/edit', 'patients.edit');
+    Volt::route('/patient/create', 'patients.create');
+    Volt::route('/patient/{user}', 'patients.show');
+    Volt::route('/patient/{user}/entry', 'patients.entries');
 
-    // Brands
-    Volt::route('/brands', 'brands.index');
-    Volt::route('/brands/{brand}/edit', 'brands.edit');
-    Volt::route('/brands/create', 'brands.create');
+    // Analytics and reports
+    Volt::route('/reports', 'analytics.index');
+    Volt::route('/analytics/{category}/edit', 'analytics.edit');
+    Volt::route('/analytics/create', 'analytics.create');
 
-    // Categories
-    Volt::route('/categories', 'categories.index');
-    Volt::route('/categories/{category}/edit', 'categories.edit');
-    Volt::route('/categories/create', 'categories.create');
+    // user settings
+    Volt::route('/userSettings', 'userSettings.index');
+    Volt::route('/userSettings/{brand}/edit', 'userSettings.edit');
+    Volt::route('/userSettings/create', 'userSettings.create');
 
     // Products
     Volt::route('/products', 'products.index');

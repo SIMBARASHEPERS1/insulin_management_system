@@ -99,7 +99,7 @@ new class extends Component {
         ]);
 
         if ($this->avatar_file) {
-            $url = $this->avatar_file->store('users', 'public');
+            $url = $this->avatar_file->store('patients', 'public');
             $user->update(['avatar' => "/storage/$url"]);
         }
 

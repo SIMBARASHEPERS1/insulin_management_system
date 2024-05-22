@@ -2,6 +2,7 @@
 
 use App\Actions\DeletePatientAction;
 use App\Models\Country;
+use App\Models\PatientHeartInformation;
 use App\Models\User;
 use Livewire\Attributes\Rule;
 use Livewire\Volt\Component;
@@ -20,7 +21,7 @@ new class extends Component {
     public string $email = '';
 
     #[Rule('required|string')]
-    public $gender = null;
+    public null|string $gender = null;
 
     #[Rule('required|date')]
     public string $dob = '';
@@ -40,9 +41,31 @@ new class extends Component {
     #[Rule('nullable|image|max:1024')]
     public $avatar_file;
 
+    #[Rule('required|numeric')]
+    public float $tdd = 0.0;
+
+    #[Rule('required|numeric')]
+    public float $dia = 0.0;
+
+    #[Rule('required|numeric')]
+    public float $hrr = 0.0;
+
+    #[Rule('required|numeric')]
+    public float $mhr = 0.0;
+
+
     public function mount(): void
     {
         $this->fill($this->user);
+        $this->address = $this->user?->patientInformation->last()->address;
+        $this->dob = $this->user?->patientInformation->last()->dob;
+        $this->gender = $this->user?->patientInformation->last()->gender;
+        $this->height = $this->user?->patientAthrometric->last()->height;
+        $this->weight = $this->user?->patientAthrometric->last()->weight;
+        $this->tdd = $this->user?->patientPhysiology->last()->tbv;
+        $this->dia = $this->user?->patientPhysiology->last()->dia;
+        $this->hrr = $this->user?->patientHeartInformation->last()->heart_rate;
+        $this->mhr = $this->user?->patientHeartInformation->last()->mhr;
     }
 
     public function delete(): void
@@ -57,16 +80,70 @@ new class extends Component {
     {
         // Validate
         $data = $this->validate();
+//        dd($data);
+
+        $userDetails = [
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'phone' => $data['phone'],
+        ];
 
         // Update
-        $this->user->update($data);
+        $this->user->update($userDetails);
+
+        //patient info
+        $this->user->patientInformation()->create([
+            'gender' => $data['gender'],
+            'dob' => $data['dob'],
+            'class' => Carbon\Carbon::parse($data['dob'])->age < 18 ? 'adolescent' : 'adult',
+            'address' => $data['address'],
+        ]);
+
+        $bmi = $data['weight'] / ($data['height'] * $data['height']);
+
+        $bmi_category = match (true) {
+            $bmi <= 18 => 'Underweight',
+            $bmi > 18 && $bmi <= 25 => 'Normal weight',
+            $bmi > 25 && $bmi <= 30 => 'Overweight',
+            default => 'Obese',
+        };
+
+        //patient anthropometric
+        $this->user->patientAthrometric()->create([
+            'height' => $data['height'],
+            'weight' => $data['weight'],
+            'bmi' => $bmi,
+            'bmi_category' => $bmi_category,
+        ]);
+
+        $gender = $data['gender'];
+        $heightCubed = $data['height'] * $data['height'] * $data['height'];
+        $tbv = ($gender == 'male') ? (0.3669 * $heightCubed)
+            + (0.03219 * $data['weight'])
+            + 0.6041 : (0.3561 * $heightCubed)
+            + (0.03308 * $data['weight'])
+            + 0.1833;
+
+        $this->user->patientPhysiology()->create([
+            // 'tbv' => round($tbv, 5),
+            'tbv' => $data['tdd'],
+            'cbgr' => round((0.00556 / (0.6 * $tbv)), 5),
+            'isf' => 2,
+            'dia' => $data['dia'],
+        ]);
+
+        PatientHeartInformation::create([
+            'patient_id' => $this->user->id,
+            'heart_rate' => $data['hrr'],
+            'mhr' => $data['mhr'],
+        ]);
 
         if ($this->avatar_file) {
-            $url = $this->avatar_file->store('users', 'public');
+            $url = $this->avatar_file->store('patients', 'public');
             $this->user->update(['avatar' => "/storage/$url"]);
         }
 
-        $this->success('Customer Updated With Success.', redirectTo: '/patient/' . $this->user->id);
+        $this->success('Patient Updated With Success.', redirectTo: '/patient/' . $this->user->id . '/edit');
     }
 
 }; ?>
@@ -74,9 +151,11 @@ new class extends Component {
 <div>
     <x-header :title="$user->name" separator progress-indicator>
         <x-slot:actions>
+            <x-button label="View patient entries" link="/patient/{{ $user->id }}/entry" icon="o-eye"
+                      class="btn-primary" responsive/>
             <x-button label="Delete patient" icon="o-trash" wire:click="delete" class="btn-error text-gray-100"
-                      wire:confirm="Are you sure you want to permanently delete this patient?" spinner responsive/>
-            <x-button label="Back" link="/users" icon="o-arrow-uturn-left" responsive/>
+                      wire:confirm="Are you sure?" spinner responsive/>
+            <x-button label="Back" link="/patients/view" icon="o-arrow-uturn-left" responsive/>
         </x-slot:actions>
     </x-header>
 
@@ -125,7 +204,6 @@ new class extends Component {
                     <x-input label="HRR" wire:model="hrr"/>
                     <br>
                     <x-input label="Max heart rate" wire:model="mhr"/>
-
                 </x-card>
 
                 <x-slot:actions>

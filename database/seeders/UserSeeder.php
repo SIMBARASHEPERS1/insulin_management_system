@@ -55,7 +55,7 @@ class UserSeeder extends Seeder
             default => 'Obese',
         };
 
-        //patient athrometric
+        //patient anthropometric
         $user->patientAthrometric()->create([
             'height' => '1.82',
             'weight' => '78.82',

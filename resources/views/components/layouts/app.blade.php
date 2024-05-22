@@ -10,7 +10,8 @@
     <link rel="mask-icon" href="{{ asset('/favicon.ico') }}" color="#ff2d20">
 
     {{--  Currency  --}}
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/robsontenorio/mary@0.44.2/libs/currency/currency.js"></script>
+    <script type="text/javascript"
+            src="https://cdn.jsdelivr.net/gh/robsontenorio/mary@0.44.2/libs/currency/currency.js"></script>
 
     {{-- ChartJS --}}
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
@@ -21,13 +22,14 @@
 
     {{-- Cropper.js --}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css"/>
 
     {{-- Sortable.js --}}
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.1/Sortable.min.js"></script>
 
     {{-- TinyMCE  --}}
-    <script src="https://cdn.tiny.cloud/1/kecao1uumzo3qt3o90pztdtlp82b4ctv8tkvsrjgcx34ock5/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+    <script src="https://cdn.tiny.cloud/1/kecao1uumzo3qt3o90pztdtlp82b4ctv8tkvsrjgcx34ock5/tinymce/6/tinymce.min.js"
+            referrerpolicy="origin"></script>
 
     {{-- PhotoSwipe --}}
     <script src="https://cdn.jsdelivr.net/npm/photoswipe@5.4.3/dist/umd/photoswipe.umd.min.js"></script>
@@ -39,63 +41,65 @@
 <body class="min-h-screen font-sans antialiased bg-base-200/50 dark:bg-base-200">
 <x-nav sticky class="lg:hidden">
     <x-slot:brand>
-        <x-flow-brand />
+        <x-flow-brand/>
     </x-slot:brand>
     <x-slot:actions>
         <label for="main-drawer" class="lg:hidden mr-3">
-            <x-icon name="o-bars-2" class="cursor-pointer" />
+            <x-icon name="o-bars-2" class="cursor-pointer"/>
         </label>
     </x-slot:actions>
 </x-nav>
 
 <x-main>
     <x-slot:sidebar drawer="main-drawer" collapsible class="bg-base-100 lg:bg-inherit">
-        <x-flow-brand class="p-5 pt-3" />
+        <x-flow-brand class="p-5 pt-3"/>
 
         <x-menu activate-by-route>
 
             {{-- User --}}
             @if($user = auth()->user())
-                <x-menu-separator />
-                <x-list-item :item="$user" value="first_name" sub-value="username" no-separator no-hover class="-mx-2 !-my-2 rounded">
+                <x-menu-separator/>
+                <x-list-item :item="$user" value="first_name" sub-value="username" no-separator no-hover
+                             class="-mx-2 !-my-2 rounded">
                     <x-slot:actions>
                         <x-dropdown>
                             <x-slot:trigger>
-                                <x-button icon="o-cog-6-tooth" class="btn-circle btn-ghost btn-xs" />
+                                <x-button icon="o-cog-6-tooth" class="btn-circle btn-ghost btn-xs"/>
                             </x-slot:trigger>
-                            <x-menu-item icon="o-power" label="Logout" link="/logout" no-wire-navigate />
-                            <x-menu-item icon="o-swatch" label="Toggle theme" @click.stop="$dispatch('mary-toggle-theme')" />
+                            <x-menu-item icon="o-power" label="Logout" link="/logout" no-wire-navigate/>
+                            <x-menu-item icon="o-swatch" label="Toggle theme"
+                                         @click.stop="$dispatch('mary-toggle-theme')"/>
                         </x-dropdown>
                     </x-slot:actions>
                 </x-list-item>
             @endif
 
-            <x-menu-separator />
+            <x-menu-separator/>
 
-            <x-menu-item title="Home" icon="o-home" link="/" />
+            <x-menu-item title="Home" icon="o-home" link="/"/>
             @if(auth()->user()->role === 'patient')
-                <x-menu-item title="Entries" icon="o-clipboard" link="/orders" />
+                <x-menu-item title="Entries" icon="o-clipboard" link="/orders"/>
             @endif
-            @if(auth()->user()->role === 'admin')
-                <x-menu-item title="Administrators" icon="o-user-circle" link="/products" />
-                <x-menu-item title="Patients" icon="o-user-plus" link="/patients/view" />
+            @if(auth()->user()->is_admin)
+                <x-menu-item title="Administrators" icon="o-user-circle" link="/products"/>
+                <x-menu-item title="Patients" icon="o-user-plus" link="/patients/view"/>
             @endif
-            <x-menu-item title="Analytics" icon="o-chart-pie" link="/categories" />
-            <x-menu-item title="Settings" icon="o-cog-8-tooth" link="/brands" />
-          {{-- @if(auth()->user()->role === 'patient')
-                <x-menu-item title="Settings" icon="o-cog-8-tooth" link="/brands" />
-            @endif  --}}
+            <x-menu-item title="Analytics" icon="o-chart-pie" link="/reports"/>
+            <x-menu-item title="Settings" icon="o-cog-8-tooth" link="/userSettings"/>
+            {{-- @if(auth()->user()->role === 'patient')
+                  <x-menu-item title="Settings" icon="o-cog-8-tooth" link="/userSettings" />
+              @endif  --}}
 
 
-{{--            <x-menu-sub title="Warehouse" icon="o-wrench-screwdriver">--}}
-{{--                <x-menu-item title="Brands" icon="o-tag" link="/brands" />--}}
-{{--                <x-menu-item title="Categories" icon="o-hashtag" link="/categories" />--}}
-{{--                <x-menu-item title="Products" icon="o-cube" link="/products" />--}}
-{{--            </x-menu-sub>--}}
+            {{--            <x-menu-sub title="Warehouse" icon="o-wrench-screwdriver">--}}
+            {{--                <x-menu-item title="Brands" icon="o-tag" link="/userSettings" />--}}
+            {{--                <x-menu-item title="Categories" icon="o-hashtag" link="/analytics" />--}}
+            {{--                <x-menu-item title="Products" icon="o-cube" link="/products" />--}}
+            {{--            </x-menu-sub>--}}
 
-            <x-menu-separator />
+            <x-menu-separator/>
 
-            <x-menu-item title="Search" @click.stop="$dispatch('mary-search-open')" icon="o-magnifying-glass"  />
+            <x-menu-item title="Search" @click.stop="$dispatch('mary-search-open')" icon="o-magnifying-glass"/>
         </x-menu>
     </x-slot:sidebar>
 
@@ -111,12 +115,12 @@
 </x-main>
 
 {{-- Toast --}}
-<x-toast />
+<x-toast/>
 
 {{-- Spotlight --}}
-<x-spotlight search-text="Search..." />
+<x-spotlight search-text="Search..."/>
 
 {{-- Theme Toggle--}}
-<x-theme-toggle class="hidden" />
+<x-theme-toggle class="hidden"/>
 </body>
 </html>

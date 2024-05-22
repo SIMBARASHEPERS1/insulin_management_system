@@ -113,8 +113,8 @@ new class extends Component {
     public function with(): array
     {
         return [
-            'brands' => $this->brands(),
-            'categories' => $this->categories()
+            'userSettings' => $this->brands(),
+            'analytics' => $this->categories()
         ];
     }
 }; ?>

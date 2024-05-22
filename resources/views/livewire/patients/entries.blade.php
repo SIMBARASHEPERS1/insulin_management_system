@@ -23,7 +23,7 @@ new class extends Component {
         $this->user->load(['patientInformation', 'patientAthrometric', 'patientPhysiology']);
     }
 
-    // All users
+    // All patients
     public function users(): LengthAwarePaginator
     {
         return PatientActivity::query()

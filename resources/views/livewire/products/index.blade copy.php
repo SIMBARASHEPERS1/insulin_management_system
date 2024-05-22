@@ -59,15 +59,15 @@ new class extends Component {
         ];
     }
 
-   
+
 
     public function with(): array
     {
         return [
             'headers' => $this->headers(),
             'products' => $this->products(),
-            'brands' => Brand::all(),
-            'categories' => Category::all(),
+            'userSettings' => Brand::all(),
+            'analytics' => Category::all(),
             'filterCount' => $this->filterCount()
         ];
     }

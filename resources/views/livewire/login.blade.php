@@ -2,6 +2,7 @@
 
 use App\Livewire\Forms\LoginForm;
 use App\Models\User;
+use Illuminate\Support\Facades\Session;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Livewire\Volt\Component;
@@ -19,7 +20,7 @@ class extends Component {
 
         $this->form->authenticate();
 
-        \Illuminate\Support\Facades\Session::regenerate();
+        Session::regenerate();
 
 //        $this->redirectIntended(default: route('dashboard', absolute: false), navigate: true);
 
@@ -31,13 +32,10 @@ class extends Component {
     <x-flow-brand class="mb-8"/>
 
     <x-form wire:submit="login">
-        <x-input label="E-mail" wire:model="form.email" id="email" name="email" required  icon="o-envelope" inline/>
-{{--        <x-errors :messages="$errors->get('form.email')" class="mt-2" />--}}
+        <x-input label="E-mail" wire:model="form.email" id="email" name="email" required icon="o-envelope" inline/>
 
         <x-input label="Password" wire:model="form.password" id="password" type="password" name="password"
-                 required  icon="o-key" inline/>
-
-{{--        <x-errors :messages="$errors->get('form.password')" class="mt-2" />--}}
+                 required icon="o-key" inline/>
 
         <x-slot:actions>
             <x-button label="Login" type="submit" icon="o-paper-airplane" class="btn-primary" spinner="login"/>

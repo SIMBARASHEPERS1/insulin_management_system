@@ -18,7 +18,7 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
-    protected $guarded = ['id'];
+    protected $guarded = ['id','created_at', 'updated_at'];
 
     /**
      * The attributes that should be hidden for serialization.
@@ -124,5 +124,10 @@ class User extends Authenticatable
         return Attribute::make(
             get: fn(?bool $value) => $this->role === 'admin'
         );
+    }
+
+    protected function patientHeartInformation(): HasMany
+    {
+        return $this->hasMany(PatientHeartInformation::class, 'patient_id', 'id');
     }
 }
