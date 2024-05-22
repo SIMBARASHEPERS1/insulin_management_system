@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -10,6 +11,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Str;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
@@ -37,6 +39,38 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function phone(): Attribute
+    {
+        return Attribute::make(
+            get: fn(?string $value) => $value ?: 'Not Provided',
+//            set: fn($value) => $value ? Str::of($value)->replaceMatches('/(\d{3})(\d{3})(\d{4})/', '($1) $2-$3') : "Not Provided"
+        );
+    }
+
+    public function lastEntry(): Attribute
+    {
+        $activity = $this->activity->last();
+        return Attribute::make(
+            get: fn() => $activity ? Carbon::parse($activity->created_at)->diffForHumans() : 'No Entry',
+        );
+    }
+
+    public function lastSugar(): Attribute
+    {
+        $activity = $this->activity->last();
+        return Attribute::make(
+            get: fn() => $activity ? $activity->sugar_level : 'No Entry',
+        );
+    }
+
+    public function lastActivity(): Attribute
+    {
+        $activity = $this->activity->last();
+        return Attribute::make(
+            get: fn() => $activity ? $activity->protocol : 'No Entry',
+        );
+    }
 
     public function country(): BelongsTo
     {

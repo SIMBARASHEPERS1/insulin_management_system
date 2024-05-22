@@ -32,12 +32,12 @@ class extends Component {
 
     <x-form wire:submit="login">
         <x-input label="E-mail" wire:model="form.email" id="email" name="email" required  icon="o-envelope" inline/>
-{{--        <x-input-error :messages="$errors->get('form.email')" class="mt-2" />--}}
+{{--        <x-errors :messages="$errors->get('form.email')" class="mt-2" />--}}
 
         <x-input label="Password" wire:model="form.password" id="password" type="password" name="password"
                  required  icon="o-key" inline/>
 
-{{--        <x-input-error :messages="$errors->get('form.password')" class="mt-2" />--}}
+{{--        <x-errors :messages="$errors->get('form.password')" class="mt-2" />--}}
 
         <x-slot:actions>
             <x-button label="Login" type="submit" icon="o-paper-airplane" class="btn-primary" spinner="login"/>

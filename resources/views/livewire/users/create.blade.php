@@ -1,6 +1,6 @@
 <?php
 
-use App\Actions\DeleteCustomerAction;
+use App\Actions\DeletePatientAction;
 use App\Models\Country;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
@@ -23,6 +23,9 @@ new class extends Component {
 
     #[Rule('required|date')]
     public string $dob = '';
+
+    #[Rule('required|string')]
+    public string $phone = '';
 
     #[Rule('required|numeric')]
     public float $height = 0.0;
@@ -50,6 +53,8 @@ new class extends Component {
             'password' => Hash::make('password'),
             'country_id' => 1,
             'email_verified_at' => now(),
+            'role' => 'patient',
+            'phone' => $data['phone'],
         ]);
 
         //patient info
@@ -77,12 +82,12 @@ new class extends Component {
             'bmi_category' => $bmi_category,
         ]);
 
-        $gender =  $data['gender'];
+        $gender = $data['gender'];
         $heightCubed = $data['height'] * $data['height'] * $data['height'];
         $tbv = ($gender == 'male') ? (0.3669 * $heightCubed)
-            + (0.03219 *  $data['weight'])
+            + (0.03219 * $data['weight'])
             + 0.6041 : (0.3561 * $heightCubed)
-            + (0.03308 *  $data['weight'])
+            + (0.03308 * $data['weight'])
             + 0.1833;
 
         $user->patientPhysiology()->create([
@@ -98,7 +103,7 @@ new class extends Component {
             $user->update(['avatar' => "/storage/$url"]);
         }
 
-        $this->success('Patient created with success.', redirectTo: '/users');
+        $this->success('Patient created with success.', redirectTo: '/patients/view');
     }
 
 };
@@ -115,7 +120,7 @@ new class extends Component {
                     <img src="{{ $user->avatar ?? '/images/empty-user.jpg' }}" class="h-40 rounded-lg mb-3"/>
                 </x-file>
                 <x-input label="Name" wire:model="name" icon="o-user" required/>
-                
+
                 <x-input label="Phone" wire:model="phone" icon="o-phone" required/>
 
                 <x-input label="Email" wire:model="email" icon="o-at-symbol" required/>

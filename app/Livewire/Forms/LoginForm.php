@@ -35,6 +35,7 @@ class LoginForm extends Form
 
             throw ValidationException::withMessages([
                 'form.email' => trans('auth.failed'),
+                'form.password' => trans('auth.failed')
             ]);
         }
 

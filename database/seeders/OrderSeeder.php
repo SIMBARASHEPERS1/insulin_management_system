@@ -18,11 +18,11 @@ class OrderSeeder extends Seeder
             return;
         }
 
-        User::all()->each(function (User $user) {
-            Order::factory(2)
-                ->for($user)
-                ->has(OrderItem::factory()->count(2), 'items')
-                ->create();
-        });
+//        User::all()->each(function (User $user) {
+//            Order::factory(2)
+//                ->for($user)
+//                ->has(OrderItem::factory()->count(2), 'items')
+//                ->create();
+//        });
     }
 }

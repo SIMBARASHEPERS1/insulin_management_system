@@ -20,26 +20,26 @@ Volt::route('/support-us', 'support-us');
 // Login
 Volt::route('/login', 'login')->name('login');
 
-//Logout
-Route::get('/logout', function () {
-    auth()->logout();
-    request()->session()->invalidate();
-    request()->session()->regenerateToken();
-
-    return redirect('/');
-});
-
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'verified'])->group(function () {
     // Dashboard
     Volt::route('/', 'dashboard.index')
-        ->middleware(['auth', 'verified'])
         ->name('dashboard');
 
+    //Logout
+    Route::get('/logout', function () {
+        auth()->logout();
+        request()->session()->invalidate();
+        request()->session()->regenerateToken();
+
+        return redirect('/');
+    });
+
     // Users
-    Volt::route('/users', 'users.index');
-    Volt::route('/users/{user}/edit', 'users.edit');
-    Volt::route('/users/create', 'users.create');
-    Volt::route('/users/{user}', 'users.show');
+    Volt::route('/patients/view', 'users.index');
+    Volt::route('/patient/{user}/edit', 'users.edit');
+    Volt::route('/patient/create', 'users.create');
+    Volt::route('/patient/{user}', 'users.show');
+    Volt::route('/patient/{user}/entry', 'users.entries');
 
     // Brands
     Volt::route('/brands', 'brands.index');

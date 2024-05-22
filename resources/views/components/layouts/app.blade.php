@@ -57,7 +57,6 @@
             {{-- User --}}
             @if($user = auth()->user())
                 <x-menu-separator />
-
                 <x-list-item :item="$user" value="first_name" sub-value="username" no-separator no-hover class="-mx-2 !-my-2 rounded">
                     <x-slot:actions>
                         <x-dropdown>
@@ -76,9 +75,10 @@
             <x-menu-item title="Home" icon="o-home" link="/" />
             @if(auth()->user()->role === 'patient')
                 <x-menu-item title="Entries" icon="o-clipboard" link="/orders" />
-            @else
+            @endif
+            @if(auth()->user()->role === 'admin')
                 <x-menu-item title="Administrators" icon="o-user-circle" link="/products" />
-                <x-menu-item title="Patients" icon="o-user-plus" link="/users" />
+                <x-menu-item title="Patients" icon="o-user-plus" link="/patients/view" />
             @endif
             <x-menu-item title="Analytics" icon="o-chart-pie" link="/categories" />
             <x-menu-item title="Settings" icon="o-cog-8-tooth" link="/brands" />

@@ -1,6 +1,6 @@
 <?php
 
-use App\Actions\DeleteCustomerAction;
+use App\Actions\DeletePatientAction;
 use App\Models\Country;
 use App\Models\User;
 use Livewire\Attributes\Rule;
@@ -19,8 +19,23 @@ new class extends Component {
     #[Rule('required|email')]
     public string $email = '';
 
-    #[Rule('required')]
-    public ?int $country_id = null;
+    #[Rule('required|string')]
+    public $gender = null;
+
+    #[Rule('required|date')]
+    public string $dob = '';
+
+    #[Rule('required|string')]
+    public string $phone = '';
+
+    #[Rule('required|numeric')]
+    public float $height = 0.0;
+
+    #[Rule('required|numeric')]
+    public float $weight = 0.0;
+
+    #[Rule('required|string')]
+    public string $address = '';
 
     #[Rule('nullable|image|max:1024')]
     public $avatar_file;
@@ -32,10 +47,10 @@ new class extends Component {
 
     public function delete(): void
     {
-        $action = new DeleteCustomerAction($this->user);
+        $action = new DeletePatientAction($this->user);
         $action->execute();
 
-        $this->success('Deleted', redirectTo: '/users');
+        $this->success('Deleted', redirectTo: '/patients/view');
     }
 
     public function save(): void
@@ -51,22 +66,17 @@ new class extends Component {
             $this->user->update(['avatar' => "/storage/$url"]);
         }
 
-        $this->success('Customer updated with success.', redirectTo: '/users');
+        $this->success('Customer Updated With Success.', redirectTo: '/patient/' . $this->user->id);
     }
 
-    public function with(): array
-    {
-        return [
-            'countries' => Country::all(),
-        ];
-    }
 }; ?>
 
 <div>
     <x-header :title="$user->name" separator progress-indicator>
         <x-slot:actions>
-        <x-button label="Delete patient" icon="o-trash" wire:click="delete" class="btn-error text-gray-100" wire:confirm="Are you sure you want to permanently delete this patient?" spinner responsive />
-         <x-button label="Back" link="/users" icon="o-arrow-uturn-left" responsive/>
+            <x-button label="Delete patient" icon="o-trash" wire:click="delete" class="btn-error text-gray-100"
+                      wire:confirm="Are you sure you want to permanently delete this patient?" spinner responsive/>
+            <x-button label="Back" link="/users" icon="o-arrow-uturn-left" responsive/>
         </x-slot:actions>
     </x-header>
 
@@ -74,52 +84,53 @@ new class extends Component {
         <div>
             <x-form wire:submit="save">
                 <x-card title="Personal Info" separator shadow>
-                    <x-file label="Profile picture" wire:model="avatar_file" accept="image/png, image/jpeg" hint="Click to change | Max 1MB" crop-after-change>
-                        <img src="{{ $user->avatar ?? '/images/empty-user.jpg' }}" class="h-40 rounded-lg mb-3" />
+                    <x-file label="Profile picture" wire:model="avatar_file" accept="image/png, image/jpeg"
+                            hint="Click to change | Max 1MB" crop-after-change>
+                        <img src="{{ $user->avatar ?? '/images/empty-user.jpg' }}" class="h-40 rounded-lg mb-3"/>
                     </x-file>
                     <br>
-                    <x-input label="Name" wire:model="name" />
+                    <x-input label="Name" wire:model="name"/>
                     <br>
-                    <x-input label="Phone *" wire:model="phone" />
+                    <x-input label="Phone *" wire:model="phone"/>
                     <br>
-                    <x-input label="Email" wire:model="email" />
+                    <x-input label="Email" wire:model="email"/>
                     <br>
-                    <x-input label="Address *" wire:model="address" />
+                    <x-input label="Address *" wire:model="address"/>
                     {{-- <x-select label="Country" wire:model="country_id" :options="$countries" placeholder="Select Country" /> --}}
                 </x-card>
 
-               
+
                 <x-card title="Demographics" class="mt-8" separator shadow>
                     <x-select label="Gender *" wire:model="gender"
-                          :options="collect([['id' => 'male', 'name' => 'Male'], ['id' => 'female', 'name' => 'Female']])"
-                          placeholder="Select gender"
-                          icon=""/>
+                              :options="collect([['id' => 'male', 'name' => 'Male'], ['id' => 'female', 'name' => 'Female']])"
+                              placeholder="Select gender"
+                              icon=""/>
                     <br>
-                    <x-input label="D.O.B *" wire:model="dob" />
+                    <x-input label="D.O.B *" wire:model="dob"/>
                 </x-card>
 
                 <x-card title="Anthropometry" class="mt-8" separator shadow>
-                    <x-input label="Height (cm) *" wire:model="height" />
+                    <x-input label="Height (cm) *" wire:model="height"/>
                     <br>
-                    <x-input label="Weight (kg)*" wire:model="weight" />
+                    <x-input label="Weight (kg)*" wire:model="weight"/>
                 </x-card>
-                
+
                 <x-card title="Physiology" class="mt-8" separator shadow>
-                    <x-input label="TDD *" wire:model="tdd" />
+                    <x-input label="TDD *" wire:model="tdd"/>
                     <br>
-                    <x-input label="DIA *" wire:model="dia" />
+                    <x-input label="DIA *" wire:model="dia"/>
                 </x-card>
-                
+
                 <x-card title="Exercise Info" class="mt-8" separator shadow>
-                    <x-input label="HRR" wire:model="hrr" />
+                    <x-input label="HRR" wire:model="hrr"/>
                     <br>
-                    <x-input label="Max heart rate" wire:model="mhr" />
-                    
+                    <x-input label="Max heart rate" wire:model="mhr"/>
+
                 </x-card>
 
                 <x-slot:actions>
-                    <x-button label="Cancel" link="/users" />
-                    <x-button label="Save" icon="o-paper-airplane" spinner="save" type="submit" class="btn-primary" />
+                    <x-button label="Cancel" link="/patient/{{$user->id}}"/>
+                    <x-button label="Save" icon="o-paper-airplane" spinner="save" type="submit" class="btn-primary"/>
                 </x-slot:actions>
             </x-form>
         </div>

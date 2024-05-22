@@ -13,42 +13,42 @@ class OrderStatusSeeder extends Seeder
             return;
         }
 
-        OrderStatus::insert([
-            [
-                'id' => OrderStatus::DRAFT,
-                'name' => 'Draft',
-                'description' => 'The order is on draft mode.',
-                'color' => 'bg-neutral/20',
-                'icon' => 'o-shopping-bag'
-            ],
-            [
-                'id' => OrderStatus::ORDER_PLACED,
-                'name' => 'Order placed',
-                'description' => 'We received the order, waiting for payment confirmation',
-                'color' => 'bg-purple-500/20',
-                'icon' => 'o-map-pin'
-            ],
-            [
-                'id' => OrderStatus::PAYMENT_CONFIRMED,
-                'name' => 'Payment confirmed',
-                'description' => 'The payment was confirmed, preparing to ship.',
-                'color' => 'bg-info/20',
-                'icon' => 'o-credit-card'
-            ],
-            [
-                'id' => OrderStatus::SHIPPED,
-                'name' => 'Shipped',
-                'description' => 'The order was sent to courier.',
-                'color' => 'bg-warning/20',
-                'icon' => 'o-paper-airplane'
-            ],
-            [
-                'id' => OrderStatus::DELIVERED,
-                'name' => 'Order delivered',
-                'description' => 'The order was delivered. Enjoy!',
-                'color' => 'bg-success/20',
-                'icon' => 'o-gift'
-            ]
-        ]);
+//        OrderStatus::insert([
+//            [
+//                'id' => OrderStatus::DRAFT,
+//                'name' => 'Draft',
+//                'description' => 'The order is on draft mode.',
+//                'color' => 'bg-neutral/20',
+//                'icon' => 'o-shopping-bag'
+//            ],
+//            [
+//                'id' => OrderStatus::ORDER_PLACED,
+//                'name' => 'Order placed',
+//                'description' => 'We received the order, waiting for payment confirmation',
+//                'color' => 'bg-purple-500/20',
+//                'icon' => 'o-map-pin'
+//            ],
+//            [
+//                'id' => OrderStatus::PAYMENT_CONFIRMED,
+//                'name' => 'Payment confirmed',
+//                'description' => 'The payment was confirmed, preparing to ship.',
+//                'color' => 'bg-info/20',
+//                'icon' => 'o-credit-card'
+//            ],
+//            [
+//                'id' => OrderStatus::SHIPPED,
+//                'name' => 'Shipped',
+//                'description' => 'The order was sent to courier.',
+//                'color' => 'bg-warning/20',
+//                'icon' => 'o-paper-airplane'
+//            ],
+//            [
+//                'id' => OrderStatus::DELIVERED,
+//                'name' => 'Order delivered',
+//                'description' => 'The order was delivered. Enjoy!',
+//                'color' => 'bg-success/20',
+//                'icon' => 'o-gift'
+//            ]
+//        ]);
     }
 }
