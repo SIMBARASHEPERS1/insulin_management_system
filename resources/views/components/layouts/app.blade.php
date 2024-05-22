@@ -81,7 +81,7 @@
                 <x-menu-item title="Entries" icon="o-clipboard" link="/orders"/>
             @endif
             @if(auth()->user()->is_admin)
-                <x-menu-item title="Administrators" icon="o-user-circle" link="/products"/>
+{{--                <x-menu-item title="Administrators" icon="o-user-circle" link="/products"/>--}}
                 <x-menu-item title="Patients" icon="o-user-plus" link="/patients/view"/>
             @endif
             <x-menu-item title="Analytics" icon="o-chart-pie" link="/reports"/>
