@@ -90,13 +90,6 @@
                   <x-menu-item title="Settings" icon="o-cog-8-tooth" link="/userSettings" />
               @endif  --}}
 
-
-            {{--            <x-menu-sub title="Warehouse" icon="o-wrench-screwdriver">--}}
-            {{--                <x-menu-item title="Brands" icon="o-tag" link="/userSettings" />--}}
-            {{--                <x-menu-item title="Categories" icon="o-hashtag" link="/analytics" />--}}
-            {{--                <x-menu-item title="Products" icon="o-cube" link="/products" />--}}
-            {{--            </x-menu-sub>--}}
-
             <x-menu-separator/>
 
             <x-menu-item title="Search" @click.stop="$dispatch('mary-search-open')" icon="o-magnifying-glass"/>

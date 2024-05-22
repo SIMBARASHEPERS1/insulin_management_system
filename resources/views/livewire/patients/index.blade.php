@@ -74,10 +74,10 @@ new class extends Component {
 
     {{--  TABLE --}}
     <x-card>
-        <x-table :headers="$headers" :rows="$users" :sort-by="$sortBy" link="/patient/{id}" with-pagination>
+        <x-table :headers="$headers" :rows="$patients" :sort-by="$sortBy" link="/patient/{id}" with-pagination>
             {{-- Avatar scope --}}
             @scope('cell_avatar', $user)
-            <x-avatar :image="$user->avatar" class="!w-10"/>
+              <x-avatar :image="$user->avatar" class="!w-10"/>
             @endscope
         </x-table>
     </x-card>
